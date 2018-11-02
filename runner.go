@@ -560,7 +560,7 @@ func (r *Runner) init() error {
 			return err
 		}
 
-		log.Printf("looking at vault %s", path)
+		log.Printf("[INFO] looking at vault %s", path)
 		d, err := dep.NewVaultReadQuery(path)
 		if err != nil {
 			return err
