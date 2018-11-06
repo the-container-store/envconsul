@@ -32,6 +32,7 @@ _testmain.go
 # IDE files
 *.iml
 *.idea
+.vscode
 
 ### OSX ###
 *.DS_Store
