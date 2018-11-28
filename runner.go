@@ -269,6 +269,12 @@ func (r *Runner) Run() (<-chan int, error) {
 		return nil, nil
 	}
 
+	// Process is running and reload set to false
+	if r.child != nil && !config.BoolVal(r.config.Reload) {
+		log.Printf("[WARN] (runner) reload is set to false... ignoring configuration change.")
+		return nil, nil
+	}
+
 	// Update the environment
 	r.env = env
 

@@ -388,6 +388,11 @@ func (cli *CLI) ParseFlags(args []string) (*Config, []string, bool, bool, error)
 		return nil
 	}), "pristine", "")
 
+	flags.Var((funcBoolVar)(func(b bool) error {
+		c.Reload = config.Bool(b)
+		return nil
+	}), "reload", "")
+
 	flags.Var((funcVar)(func(s string) error {
 		sig, err := signals.Parse(s)
 		if err != nil {

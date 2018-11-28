@@ -64,6 +64,9 @@ type Config struct {
 	// environment
 	Pristine *bool `mapstructure:"pristine"`
 
+	// Indicates whether or not we should reload when configuration changes are detected
+	Reload *bool `mapstructure:"reload"`
+
 	// ReloadSignal is the signal to listen for a reload event.
 	ReloadSignal *os.Signal `mapstructure:"reload_signal"`
 
@@ -114,6 +117,8 @@ func (c *Config) Copy() *Config {
 	}
 
 	o.Pristine = c.Pristine
+
+	o.Reload = c.Reload
 
 	o.Sanitize = c.Sanitize
 
@@ -186,6 +191,10 @@ func (c *Config) Merge(o *Config) *Config {
 
 	if o.Pristine != nil {
 		r.Pristine = o.Pristine
+	}
+
+	if o.Reload != nil {
+		r.Reload = o.Reload
 	}
 
 	if o.Sanitize != nil {
@@ -493,6 +502,7 @@ func (c *Config) GoString() string {
 		"PidFile:%s, "+
 		"Prefixes:%s, "+
 		"Pristine:%s, "+
+		"Reload:%s, "+
 		"ReloadSignal:%s, "+
 		"Sanitize:%s, "+
 		"Secrets:%s, "+
@@ -509,6 +519,7 @@ func (c *Config) GoString() string {
 		config.StringGoString(c.PidFile),
 		c.Prefixes.GoString(),
 		config.BoolGoString(c.Pristine),
+		config.BoolGoString(c.Reload),
 		config.SignalGoString(c.ReloadSignal),
 		config.BoolGoString(c.Sanitize),
 		c.Secrets.GoString(),
@@ -575,6 +586,10 @@ func (c *Config) Finalize() {
 
 	if c.Pristine == nil {
 		c.Pristine = config.Bool(false)
+	}
+
+	if c.Reload == nil {
+		c.Reload = config.Bool(true)
 	}
 
 	if c.ReloadSignal == nil {
